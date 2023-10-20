@@ -1,0 +1,19 @@
+PUT 1 Arsenal
+PUT 2 City
+PUT 3 United
+PUT 4 Liverpool
+PUT 5 Chelsea
+GET 1
+GET 2
+GET 3
+GET 4
+GET 5
+DELETE 1
+DELETE 2
+DELETE 3
+DELETE 4
+DELETE 5
+GETasd 123
+GET 1
+DELETE 1
+PUT 1 Arsenal 12
