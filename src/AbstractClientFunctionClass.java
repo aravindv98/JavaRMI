@@ -10,6 +10,19 @@ public abstract class AbstractClientFunctionClass {
     String key = content.split(" ",2)[0];
     return key.equals("PUT")||key.equals("GET")||key.equals("DELETE");
   }
+  protected static String clientRead(String line) {
+    if(isValidOp(line)) {
+      String timestampedMessage = getCurrentTime() + " " +"Sent to server: "+ line;
+      System.out.println(timestampedMessage);
+      return line;
+    }
+    else {
+      String timestampedMessage = getCurrentTime() + " " + "received malformed request of length:" +
+              line.length();
+      System.out.println(timestampedMessage);
+      return "received malformed request of length:" + line.length();
+    }
+  }
   // To return the current system time of the client.
   protected static String getCurrentTime(){
     LocalDateTime currentDateTime = LocalDateTime.now();
