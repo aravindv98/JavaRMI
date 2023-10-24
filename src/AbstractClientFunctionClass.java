@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter;
  */
 public abstract class AbstractClientFunctionClass {
   // To check if the operation is valid or not from client side.
-  protected static boolean isValidOp(String content){
+  protected synchronized static boolean isValidOp(String content){
     String key = content.split(" ",2)[0];
     return key.equals("PUT")||key.equals("GET")||key.equals("DELETE");
   }
-  protected static String clientRead(String line) {
+  protected synchronized static String clientRead(String line) {
     if(isValidOp(line)) {
       String timestampedMessage = getCurrentTime() + " " +"Sent to server: "+ line;
       System.out.println(timestampedMessage);
@@ -24,7 +24,7 @@ public abstract class AbstractClientFunctionClass {
     }
   }
   // To return the current system time of the client.
-  protected static String getCurrentTime(){
+  protected synchronized static String getCurrentTime(){
     LocalDateTime currentDateTime = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     return currentDateTime.format(formatter);

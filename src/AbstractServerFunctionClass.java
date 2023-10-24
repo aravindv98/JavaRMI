@@ -16,15 +16,15 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
     map.put("5","United");
   }
   //Implementing the put operation of the Map. (PUT)
-  public void putCommand(String key, String value){
+  public synchronized void putCommand(String key, String value){
     map.put(key,value);
   }
   //Implementing the get operation of the Map. (GET)
-  public String getCommand(String key){
+  public synchronized String getCommand(String key){
     return map.get(key);
   }
   //Implementing the delete operation of the Map. (DELETE)
-  public boolean deleteCommand(String key){
+  public synchronized boolean deleteCommand(String key){
     if(map.containsKey(key)){
       map.remove(key);
       return true;
@@ -32,14 +32,14 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
     return false;
   }
   // Returns the current system time of the server.
-  public static String getCurrentTime(){
+  public synchronized static String getCurrentTime(){
     LocalDateTime currentDateTime = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     return currentDateTime.format(formatter);
   }
   // Helper function to invoke the delete operation of the map and to check if the delete operation
   // can be performed using the arguments provided.
-  public String deleteOperation(String key, String clientAddress, String clientPort) {
+  public synchronized String deleteOperation(String key, String clientAddress, String clientPort) {
     //To check the number of arguments passed for deletion.
     long startTime = System.currentTimeMillis();
     String [] validChunks = key.split(" ");
@@ -63,7 +63,7 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
   }
   // Helper function to invoke the get operation of the map and to check if the get operation
   // can be performed using the arguments provided.
-  public String getOperation( String key, String clientAddress, String clientPort) {
+  public synchronized String getOperation( String key, String clientAddress, String clientPort) {
     long startTime = System.currentTimeMillis();
     //To check the number of arguments passed for get.
     String [] validChunks = key.split(" ");
@@ -88,7 +88,7 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
   }
   // Helper function to invoke the put operation of the map and to check if the put operation
   // can be performed using the arguments provided.
-  public String putOperation(String key, String clientAddress, String clientPort) {
+  public synchronized String putOperation(String key, String clientAddress, String clientPort) {
     long startTime = System.currentTimeMillis();
     // Thread.sleep(500);
     //To check the number of arguments passed for put.
@@ -120,14 +120,14 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
 
 
   }
-  public String checkTimeOut(long startTime, long endTime){
+  public synchronized String checkTimeOut(long startTime, long endTime){
     if(endTime - startTime > 10){
       return getCurrentTime()+ " Request Timed out with request taking: "+
               (endTime-startTime)+" ms to process!";
     }
     return "";
   }
-  public String redirectingRequests(String clientMessage, String serverResponse, String clientAddress, String clientPort) {
+  public synchronized String redirectingRequests(String clientMessage, String serverResponse, String clientAddress, String clientPort) {
     String operation = clientMessage.split(" ", 2)[0];
     String key = clientMessage.split(" ", 2)[1];
     switch (operation) {
