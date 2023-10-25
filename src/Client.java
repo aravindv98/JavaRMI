@@ -36,7 +36,7 @@ public class Client extends AbstractClientFunctionClass{
               String line;
               while ((line = reader.readLine()) != null) {
                 String toServer = clientRead(line);
-                String serverResponse = stub.redirectingRequests(toServer, "", serverAddress, String.valueOf(clientPort));
+                String serverResponse = stub.performOperation(toServer, "", serverAddress, String.valueOf(clientPort));
                 System.out.println(getCurrentTime() + " Received from server: " + serverResponse);
               }
               break;
@@ -49,7 +49,7 @@ public class Client extends AbstractClientFunctionClass{
           // Interactive commands entered here.
           default: {
             String toServer = clientRead(clientMessage);
-            String serverResponse = stub.redirectingRequests(toServer, "", serverAddress, String.valueOf(clientPort));
+            String serverResponse = stub.performOperation(toServer, "", serverAddress, String.valueOf(clientPort));
             System.out.println(getCurrentTime() + " Received from server: " + serverResponse);
           }
         }

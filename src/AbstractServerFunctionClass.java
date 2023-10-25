@@ -133,7 +133,7 @@ public abstract class AbstractServerFunctionClass extends RemoteObject implement
   }
   // Function to redirect the requests from the client to the respective methods.
   // The client calls only this method and the server handles all the remaining operations.
-  public synchronized String redirectingRequests(String clientMessage, String serverResponse, String clientAddress, String clientPort) {
+  public synchronized String performOperation(String clientMessage, String serverResponse, String clientAddress, String clientPort) {
     String operation = clientMessage.split(" ", 2)[0];
     String key = clientMessage.split(" ", 2)[1];
     switch (operation) {
