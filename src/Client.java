@@ -6,21 +6,28 @@ import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.util.Scanner;
 
+/**
+ * An RMI Client that fetches the remote object and invokes the required server methods using this object.
+ */
 public class Client extends AbstractClientFunctionClass{
   public static void main(String[] args){
     try {
       String serverAddress = args[0];
       int clientPort = Integer.parseInt(args[1]);
       Registry registry = LocateRegistry.getRegistry(serverAddress, clientPort);
+      // Get the required object to access the server methods.
       RMIServer stub = (RMIServer) registry.lookup("RMIServer");
       System.out.println(getCurrentTime()+" Client is running");
+      // Menu to provide interactive mode / run by file options.
       System.out.println(getCurrentTime()+" This is a menu driven program with the following commands: PUT/GET/DELETE/file");
       System.out.println(getCurrentTime()+" Enter 'exit' to exit");
       Scanner sc = new Scanner(System.in);
+      // Loop until the client wishes to exit
       while (true) {
         String clientMessage = "";
         clientMessage += sc.nextLine();
         switch (clientMessage.toUpperCase()) {
+          // File is executed by reading the contents of the file.
           case "FILE": {
             File file = new File("commands.txt");
             try (FileInputStream fileInputStream = new FileInputStream(file);
@@ -38,12 +45,15 @@ public class Client extends AbstractClientFunctionClass{
           case "EXIT" :{
             System.out.println(getCurrentTime() + " Client disconnected");
             break;
-          } default: {
+          }
+          // Interactive commands entered here.
+          default: {
             String toServer = clientRead(clientMessage);
             String serverResponse = stub.redirectingRequests(toServer, "", serverAddress, String.valueOf(clientPort));
             System.out.println(getCurrentTime() + " Received from server: " + serverResponse);
           }
         }
+        // To terminate the execution of the client when exited.
         if (clientMessage.equalsIgnoreCase("exit")) {
           break;
         }

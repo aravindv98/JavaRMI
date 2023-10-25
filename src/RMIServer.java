@@ -1,5 +1,10 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
+/**
+ * An RMI interface containing the methods to be implemented by the server and to be exposed to the
+ * client through a remote object.
+ */
 public interface RMIServer extends Remote{
   void putCommand(String key, String value) throws RemoteException;
   String getCommand(String key) throws RemoteException;

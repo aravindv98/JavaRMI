@@ -1,13 +1,15 @@
+import java.rmi.server.RemoteObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Abstract server class that contains the common implementations of the TCP and UDP servers.
+ * Abstract server class that contains the implementation of the hashmap functions.
  */
-public abstract class AbstractServerFunctionClass implements RMIServer{
+public abstract class AbstractServerFunctionClass extends RemoteObject implements RMIServer{
   // Map to store, get and delete key/value pairs.
   private static ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
+  // Pre-populating the key,value pairs of the hashmap.
   public AbstractServerFunctionClass(){
     map.put("1","Arsenal");
     map.put("2","City");
@@ -42,6 +44,7 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
   public synchronized String deleteOperation(String key, String clientAddress, String clientPort) {
     //To check the number of arguments passed for deletion.
     long startTime = System.currentTimeMillis();
+    // Thread.sleep(500);
     String [] validChunks = key.split(" ");
     // If valid, then send confirmation message to client.
     if(deleteCommand(key)&&validChunks.length==1) {
@@ -65,6 +68,7 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
   // can be performed using the arguments provided.
   public synchronized String getOperation( String key, String clientAddress, String clientPort) {
     long startTime = System.currentTimeMillis();
+    // Thread.sleep(500);
     //To check the number of arguments passed for get.
     String [] validChunks = key.split(" ");
     // If valid, then send confirmation message to client.
@@ -127,6 +131,8 @@ public abstract class AbstractServerFunctionClass implements RMIServer{
     }
     return "";
   }
+  // Function to redirect the requests from the client to the respective methods.
+  // The client calls only this method and the server handles all the remaining operations.
   public synchronized String redirectingRequests(String clientMessage, String serverResponse, String clientAddress, String clientPort) {
     String operation = clientMessage.split(" ", 2)[0];
     String key = clientMessage.split(" ", 2)[1];

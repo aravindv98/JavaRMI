@@ -2,7 +2,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Abstract class containing the common implementations of both TCP and UDP clients.
+ * Abstract class containing the implementation of client methods.
  */
 public abstract class AbstractClientFunctionClass {
   // To check if the operation is valid or not from client side.
@@ -10,6 +10,7 @@ public abstract class AbstractClientFunctionClass {
     String key = content.split(" ",2)[0];
     return key.equals("PUT")||key.equals("GET")||key.equals("DELETE");
   }
+  // To check if the given request is malformed or not.
   protected synchronized static String clientRead(String line) {
     if(isValidOp(line)) {
       String timestampedMessage = getCurrentTime() + " " +"Sent to server: "+ line;
